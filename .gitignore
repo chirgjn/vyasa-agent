@@ -1,0 +1,52 @@
+# Python-generated files
+__pycache__/
+*.py[oc]
+*.so
+build/
+dist/
+wheels/
+*.egg-info
+
+# Coverage
+.coverage
+htmlcov/
+
+# Virtual environments
+.venv
+venv/
+env/
+.DS_Store
+
+# Git worktrees
+.worktrees/
+
+# vyasa audit run artefacts (ephemeral)
+.vyasa/
+
+# Local tool binaries (installed by scripts/setup/install-taplo.sh fallback)
+.local/
+
+# basedpyright
+.basedpyright/
+
+# ruff
+.ruff_cache/
+
+# pytest
+.pytest_cache/
+
+# Playwright CLI
+.playwright-cli/
+
+# Editors
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+
+# Local Claude settings
+.claude/settings.local.json
+
+# Node modules
+node_modules/

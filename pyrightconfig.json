@@ -1,0 +1,10 @@
+{
+  "include": ["scripts", "tests"],
+  "exclude": [],
+  "executionEnvironments": [
+    {
+      "root": "tests",
+      "reportExplicitAny": "none"
+    }
+  ]
+}

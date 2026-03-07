@@ -1,0 +1,169 @@
+---
+name: Lint
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v6
+      - uses: astral-sh/setup-uv@v7
+        with:
+          enable-cache: true
+      - run: uv python install ">=3.14"
+      - run: uv sync
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: latest
+      - run: pnpm install
+
+      - name: prettier
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/prettier-fix.sh --check 2>&1 | tee /tmp/prettier.log
+          echo "${PIPESTATUS[0]}" > /tmp/prettier.exitcode
+
+      - name: ruff
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/ruff-fix.sh --check 2>&1 | tee /tmp/ruff.log
+          echo "${PIPESTATUS[0]}" > /tmp/ruff.exitcode
+
+      - name: basedpyright
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/basedpyright-lint.sh 2>&1 | tee /tmp/basedpyright.log
+          echo "${PIPESTATUS[0]}" > /tmp/basedpyright.exitcode
+
+      - name: pytest
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/pytest-run.sh 2>&1 | tee /tmp/pytest.log
+          code="${PIPESTATUS[0]}"
+          # exit code 5 = no tests collected, treat as success
+          if [ "$code" -eq 5 ]; then code=0; fi
+          echo "$code" > /tmp/pytest.exitcode
+
+      - name: shellcheck
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/shellcheck-lint.sh 2>&1 | tee /tmp/shellcheck.log
+          echo "${PIPESTATUS[0]}" > /tmp/shellcheck.exitcode
+
+      - name: yamllint
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/yamllint-fmt.sh 2>&1 | tee /tmp/yamllint.log
+          echo "${PIPESTATUS[0]}" > /tmp/yamllint.exitcode
+
+      - name: actionlint
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          scripts/tools/actionlint-lint.sh 2>&1 | tee /tmp/actionlint.log
+          echo "${PIPESTATUS[0]}" > /tmp/actionlint.exitcode
+
+      - name: taplo (read version)
+        id: taplo-version
+        run: |
+          VERSION="$(grep -m1 'taplo' .mise.toml | grep -o '[0-9][0-9.]*')"
+          echo "version=${VERSION}" >> "$GITHUB_OUTPUT"
+
+      - name: taplo (restore cache)
+        uses: actions/cache@v5
+        with:
+          path: .local/bin/taplo
+          key: taplo-${{ runner.os }}-${{ steps.taplo-version.outputs.version }}
+
+      - name: taplo
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        env:
+          TAPLO_VERSION: ${{ steps.taplo-version.outputs.version }}
+        run: |
+          export PATH="${PWD}/.local/bin:${PATH}"
+          if ! command -v taplo &>/dev/null; then
+            mkdir -p .local/bin
+            curl -fsSL "https://github.com/tamasfe/taplo/releases/download/${TAPLO_VERSION}/taplo-linux-x86_64.gz" \
+              | gunzip > .local/bin/taplo
+            chmod +x .local/bin/taplo
+          fi
+          scripts/tools/taplo-fmt.sh --check 2>&1 | tee /tmp/taplo.log
+          echo "${PIPESTATUS[0]}" > /tmp/taplo.exitcode
+
+      - name: plugin-version
+        if: always()
+        continue-on-error: true
+        shell: bash --noprofile --norc -o pipefail {0}
+        run: |
+          version=$(jq -r '.version' .claude-plugin/plugin.json)
+          commit_msg=$(git log -1 --format='%s')
+          if [[ "$version" != *-dev ]] && [[ "$commit_msg" != release:* ]]; then
+            echo "Version '$version' is missing the -dev suffix." | tee /tmp/plugin-version.log
+            echo "Add -dev and bump the version (e.g. ${version}-dev)." | tee -a /tmp/plugin-version.log
+            echo "1" > /tmp/plugin-version.exitcode
+          else
+            echo "Version '$version' ok" > /tmp/plugin-version.log
+            echo "0" > /tmp/plugin-version.exitcode
+          fi
+
+      - name: Summary
+        if: always()
+        run: |
+          {
+            echo "## CI Results"
+            echo ""
+            echo "| Check | Status |"
+            echo "|-------|--------|"
+          } >> "$GITHUB_STEP_SUMMARY"
+
+          FAILED=0
+          for check in prettier ruff basedpyright pytest shellcheck yamllint actionlint taplo plugin-version; do
+            code=$(cat "/tmp/${check}.exitcode" 2>/dev/null || echo "?")
+            if [ "$code" = "0" ]; then
+              echo "| ${check} | :white_check_mark: pass |" >> "$GITHUB_STEP_SUMMARY"
+            else
+              echo "| ${check} | :x: fail |" >> "$GITHUB_STEP_SUMMARY"
+              FAILED=1
+            fi
+          done
+
+          # Show output for failed checks
+          for check in prettier ruff basedpyright pytest shellcheck yamllint actionlint taplo plugin-version; do
+            code=$(cat "/tmp/${check}.exitcode" 2>/dev/null || echo "?")
+            if [ "$code" != "0" ]; then
+              {
+                echo ""
+                echo "<details><summary>${check} output</summary>"
+                echo ""
+                echo '```'
+                tail -50 "/tmp/${check}.log"
+                echo '```'
+                echo "</details>"
+              } >> "$GITHUB_STEP_SUMMARY"
+            fi
+          done
+
+          exit "$FAILED"

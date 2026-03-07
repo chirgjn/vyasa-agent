@@ -1,0 +1,53 @@
+---
+repos:
+  - repo: local
+    hooks:
+      - id: ruff
+        name: ruff
+        entry: scripts/tools/ruff-fix.sh
+        language: script
+        types: [python]
+      - id: basedpyright
+        name: basedpyright
+        entry: scripts/tools/basedpyright-lint.sh
+        language: script
+        types: [python]
+        pass_filenames: false
+      - id: prettier
+        name: prettier
+        entry: scripts/tools/prettier-fix.sh
+        language: script
+        types: [markdown]
+      - id: shellcheck
+        name: shellcheck
+        entry: scripts/tools/shellcheck-lint.sh
+        language: script
+        types: [bash]
+      - id: taplo
+        name: taplo
+        entry: scripts/tools/taplo-fmt.sh
+        language: script
+        files: \.toml$
+      - id: yamllint
+        name: yamllint
+        entry: scripts/tools/yamllint-fmt.sh
+        language: script
+        files: \.(yaml|yml)$
+      - id: actionlint
+        name: actionlint
+        entry: scripts/tools/actionlint-lint.sh
+        language: script
+        files: ^\.github/workflows/.*\.(yaml|yml)$
+      - id: check-plugin-version
+        name: plugin version has -dev suffix
+        entry: scripts/tools/check-plugin-version.sh
+        language: script
+        always_run: true
+        pass_filenames: false
+      - id: uv-sync
+        name: uv sync (on lock change)
+        entry: scripts/tools/uv-sync-if-lock-changed.sh
+        language: script
+        always_run: true
+        pass_filenames: false
+        stages: [post-merge, post-checkout]

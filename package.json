@@ -1,0 +1,10 @@
+{
+  "name": "vyasa-dev",
+  "private": true,
+  "devDependencies": {
+    "prettier": "^3.0.0"
+  },
+  "engines": {
+    "pnpm": ">=10"
+  }
+}
