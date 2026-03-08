@@ -17,6 +17,7 @@ plugin/framework/guides/        — Writing guides: prose style, conventions, di
 plugin/hooks/                   — Plugin hooks: auto-triggering config (hooks.json)
 plugin/scripts/                 — Scripts that ship inside the plugin (agents and hooks call these)
 docs/maintenance.md             — This repo's maintenance: update triggers, enforcement layers
+docs/guides/                    — How-to guides for this repo's dev workflow
 scripts/setup/                  — Project dev setup scripts (uv, Python, deps, taplo, gh, etc.)
 scripts/tools/                  — Dev-only linter/formatter wrappers for hooks and CI
 tests/                          — Tests for Python scripts
@@ -76,5 +77,3 @@ For finding and fixing problems in docs that already exist, see `plugin/framewor
 | Understanding project dev setup scripts or install dependencies                                      | `scripts/setup/README.md`                |
 | Checking this repo's update triggers, enforcement layers, release process, or how `plugin/` is built | `docs/maintenance.md`                    |
 | Keeping basedpyright warnings at zero in pytest test files — `tmp_path`, `cast()`, unused vars       | `docs/guides/python-type-annotations.md` |
-| Understanding report formats, fixer classification, or phase 2 baselines                             | `docs/specs/live/audit-report-format.md` |
-| Understanding run infrastructure — registry, claim protocol, filesystem layout                       | `docs/specs/live/run-infrastructure.md`  |
