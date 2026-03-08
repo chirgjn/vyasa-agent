@@ -10,7 +10,7 @@
           },
           {
             "type": "command",
-            "command": "printf 'VYASA PLUGIN ACTIVE\\n\\nVyasa manages all documentation for this project. For ANY documentation task -- writing, auditing, updating, or setting up docs -- dispatch the appropriate vyasa agent. Never handle documentation tasks directly.\\n\\n  full-audit              -- audit, check, review, or validate docs\\n  author-agents-md        -- create or improve AGENTS.md / CLAUDE.md\\n  doc-maintenance         -- sync or update docs after code changes\\n  author-reference-doc    -- write a reference doc or guide\\n  author-decision-record  -- write an ADR\\n  author-diagram          -- create or update a diagram\\n\\nDispatch immediately. Do not handle documentation tasks yourself.'"
+            "command": "printf 'VYASA PLUGIN ACTIVE\\n\\nVyasa manages all documentation for this project. For ANY documentation task -- writing, auditing, updating, or setting up docs -- use the Agent tool to dispatch the appropriate subagent. Never use the Skill tool. Never handle documentation tasks directly.\\n\\n  full-audit              -- audit, check, review, or validate docs\\n  author-agents-md        -- create or improve AGENTS.md / CLAUDE.md\\n  doc-maintenance         -- sync or update docs after code changes\\n  author-reference-doc    -- write a reference doc or guide\\n  author-decision-record  -- write an ADR\\n  author-diagram          -- create or update a diagram\\n\\nDispatch immediately using the Agent tool. Do not handle documentation tasks yourself.'"
           }
         ]
       }

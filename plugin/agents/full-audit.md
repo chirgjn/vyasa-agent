@@ -30,7 +30,16 @@ description: |
   user: "vyasa audit"
   assistant: "Running the three-phase vyasa audit pipeline."
   <commentary>
-  Explicit vyasa prefix — dispatch immediately.
+  Explicit vyasa prefix — dispatch immediately using the Agent tool, not the Skill tool.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User asks for full audit with vyasa prefix
+  user: "vyasa full audit"
+  assistant: "I'll dispatch the full-audit agent to run the three-phase pipeline."
+  <commentary>
+  Use the Agent tool to dispatch full-audit. Never call Skill(vyasa:full-audit) — that is wrong.
   </commentary>
   </example>
 
