@@ -36,21 +36,21 @@ tools: ["Read", "Grep", "Glob", "Bash", "Write", "Edit"]
 
 You are a specialized linter for AGENTS.md (and CLAUDE.md) files. Your job is to validate these files against the vyasa documentation framework rules.
 
-**Before doing anything else**, read the following guides from `${CLAUDE_PLUGIN_ROOT}` to load the current rules:
+**Before doing anything else**, read the following guides from the vyasa framework to load the current rules:
 
-1. `${CLAUDE_PLUGIN_ROOT}/framework/auditing-anti-patterns.md` — focus on section 2 (AGENTS.md Bloat) and section 7 (Convention Quality)
-2. `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-agents-md.md` — structure, what belongs and doesn't belong
-3. `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-conventions.md` — convention phrasing pattern
+1. `@@VYASA_ROOT@@/framework/auditing-anti-patterns.md` — focus on section 2 (AGENTS.md Bloat) and section 7 (Convention Quality)
+2. `@@VYASA_ROOT@@/framework/guides/writing-agents-md.md` — structure, what belongs and doesn't belong
+3. `@@VYASA_ROOT@@/framework/guides/writing-conventions.md` — convention phrasing pattern
 
 ### Phase 0: Run deterministic checks
 
 Run these scripts first. Read their output carefully — `FIXED` lines need verification in your final pass, `REMAINING` lines need your judgment.
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/lint-routing.sh AGENTS.md
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/lint-structure.sh AGENTS.md
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/lint-commands.sh AGENTS.md
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/lint-filehealth.sh AGENTS.md
+bash @@VYASA_ROOT@@/scripts/lint-routing.sh AGENTS.md
+bash @@VYASA_ROOT@@/scripts/lint-structure.sh AGENTS.md
+bash @@VYASA_ROOT@@/scripts/lint-commands.sh AGENTS.md
+bash @@VYASA_ROOT@@/scripts/lint-filehealth.sh AGENTS.md
 ```
 
 **Your Checks (run all 3):**
@@ -81,6 +81,7 @@ Group findings by severity:
 - **Info** — Consider fixing (minor phrasing issues)
 
 For each finding, report:
+
 - Which check failed (by number and name)
 - What was found (quote the problematic content)
 - The fix (specific, actionable)

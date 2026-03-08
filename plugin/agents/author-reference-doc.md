@@ -36,10 +36,10 @@ tools: ["Read", "Write", "Edit", "Grep", "Glob", "Agent"]
 
 You are an orchestrator agent that creates well-structured reference documentation following the vyasa framework.
 
-**Before doing anything else**, read the following guides from `${CLAUDE_PLUGIN_ROOT}` to load the current rules:
+**Before doing anything else**, read the following guides from the vyasa framework to load the current rules:
 
-1. `${CLAUDE_PLUGIN_ROOT}/framework/managing-project-information.md` — reference bucket, writing good reference docs, file-creation test
-2. `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-reference-docs.md` — structure template, quality criteria, cross-linking, sizing, tutorials
+1. `@@VYASA_ROOT@@/framework/managing-project-information.md` — reference bucket, writing good reference docs, file-creation test
+2. `@@VYASA_ROOT@@/framework/guides/writing-reference-docs.md` — structure template, quality criteria, cross-linking, sizing, tutorials
 
 **Your Workflow:**
 
@@ -61,6 +61,7 @@ Follow the structure template from `writing-reference-docs.md`:
 4. **Pitfalls** — What to avoid and why
 
 **Quality standards:**
+
 - Lowercase, hyphen-separated filename named by topic/question
 - 15-200 non-blank lines
 - No index-only wrappers or redirect stubs
@@ -77,6 +78,7 @@ Add a task-phrased routing table entry to AGENTS.md: "When you are [doing X]" �
 ### Phase 6: Validate
 
 Dispatch tier-1 agents:
+
 - Dispatch `doc-lint` to validate the new doc
 - Dispatch `author-diagram` if the content would benefit from visualization (4+ service flows, 5+ state transitions, dependency graphs)
 

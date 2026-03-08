@@ -33,6 +33,7 @@ to `doc-editor` and what to escalate to the user.
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
@@ -56,9 +57,9 @@ Write your report to:
 
 Create the directory if it does not exist.
 
-Before analysing, read the following guide from `${CLAUDE_PLUGIN_ROOT}`:
+Before analysing, read the following guide from the vyasa framework:
 
-- `${CLAUDE_PLUGIN_ROOT}/framework/managing-project-information.md` — one canonical home
+- `@@VYASA_ROOT@@/framework/managing-project-information.md` — one canonical home
   principle, placement decision tree, duplication rules
 
 Then read the target document in full. Also read the other file named in any duplication or
@@ -68,13 +69,13 @@ misplaced-passage finding — you need its content to write a concrete recommend
 
 ## Classification Contract
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Verbatim duplication >3 lines — canonical home is clear | yes | multi-file | yes | Remove block from one file, add link; canonical is unambiguous |
-| Semantic duplication — same concept in different words | no | — | — | Requires judgment on which version is canonical and what to keep |
-| Misplaced content passage — target file exists | yes | multi-file | yes | Extract block, insert into target file, add link |
-| Misplaced content passage — target file does not exist | no | — | — | Creating a new file is a structural decision; user decides |
-| Convention drift — doc contradicts current practice | no | — | — | User must decide which is correct: update the doc or update the code |
+| Finding                                                 | fixable | scope      | reversible | Reason                                                               |
+| ------------------------------------------------------- | ------- | ---------- | ---------- | -------------------------------------------------------------------- |
+| Verbatim duplication >3 lines — canonical home is clear | yes     | multi-file | yes        | Remove block from one file, add link; canonical is unambiguous       |
+| Semantic duplication — same concept in different words  | no      | —          | —          | Requires judgment on which version is canonical and what to keep     |
+| Misplaced content passage — target file exists          | yes     | multi-file | yes        | Extract block, insert into target file, add link                     |
+| Misplaced content passage — target file does not exist  | no      | —          | —          | Creating a new file is a structural decision; user decides           |
+| Convention drift — doc contradicts current practice     | no      | —          | —          | User must decide which is correct: update the doc or update the code |
 
 **Multi-file fixes:** `doc-editor` will claim both files before editing either. The
 recommendation must specify exactly which file loses content and which gains it, with

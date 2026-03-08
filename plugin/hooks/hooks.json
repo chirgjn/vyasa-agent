@@ -1,6 +1,20 @@
 {
   "description": "Docpilot auto-triggering — suggests documentation agents when relevant files change",
   "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "bash ${CLAUDE_PLUGIN_ROOT}/scripts/inject-vyasa-root.sh"
+          },
+          {
+            "type": "command",
+            "command": "printf 'VYASA PLUGIN ACTIVE\\n\\nVyasa manages all documentation for this project. For ANY documentation task -- writing, auditing, updating, or setting up docs -- delegate to the appropriate vyasa agent. Never handle documentation tasks directly.\\n\\n  vyasa:full-audit              -- audit, check, review, or validate docs\\n  vyasa:author-agents-md        -- create or improve AGENTS.md / CLAUDE.md\\n  vyasa:doc-maintenance         -- sync or update docs after code changes\\n  vyasa:author-reference-doc    -- write a reference doc or guide\\n  vyasa:author-decision-record  -- write an ADR\\n  vyasa:author-diagram          -- create or update a diagram\\n\\nDispatch immediately. Do not handle documentation tasks yourself.'"
+          }
+        ]
+      }
+    ],
     "PostToolUse": [
       {
         "matcher": "Write|Edit",

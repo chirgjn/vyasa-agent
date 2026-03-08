@@ -27,23 +27,27 @@ You do NOT apply changes. Phase 3 fixers always write `Next-phase wait: no`.
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
 Read the document's current path from `.vyasa/<run-id>/registry.json`.
 
 Read the `staleness-audit` report from:
+
 ```
 .vyasa/<run-id>/reports/phase-3/staleness-audit/<doc-id>.md
 ```
 
 Write your report to:
+
 ```
 .vyasa/<run-id>/reports/phase-3/staleness-fixer/<doc-id>.md
 ```
 
 Before analysing, read:
-- `${CLAUDE_PLUGIN_ROOT}/framework/guides/staleness.md` — staleness detection patterns
+
+- `@@VYASA_ROOT@@/framework/guides/staleness.md` — staleness detection patterns
 
 Then read the target document in full.
 
@@ -51,17 +55,17 @@ Then read the target document in full.
 
 ## Classification Contract
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Broken path reference — correct path is determinable | yes | file | yes | Replacing the stale path in one file |
-| Broken path reference — correct path unknown | no | — | — | User must locate or recreate the file |
-| Missing script (path doesn't exist) | no | — | — | User must create the script or remove the entry |
-| Command description mismatches script | yes | file | yes | Updating the description in one file |
-| Aspirational convention | no | — | — | User decides: enforce via linter, fix codebase, or delete |
-| Diagram node references renamed/removed component | yes | file | yes | Updating the node label in the Mermaid source |
-| Diagram edge contradicts another document | no | — | — | Requires judgment on which document is correct |
-| ADR missing status field | yes | file | yes | Adding status field to YAML frontmatter or top of ADR |
-| ADR superseded by newer ADR without status update | yes | file | yes | Updating status to Superseded and adding superseded-by reference |
+| Finding                                              | fixable | scope | reversible | Reason                                                           |
+| ---------------------------------------------------- | ------- | ----- | ---------- | ---------------------------------------------------------------- |
+| Broken path reference — correct path is determinable | yes     | file  | yes        | Replacing the stale path in one file                             |
+| Broken path reference — correct path unknown         | no      | —     | —          | User must locate or recreate the file                            |
+| Missing script (path doesn't exist)                  | no      | —     | —          | User must create the script or remove the entry                  |
+| Command description mismatches script                | yes     | file  | yes        | Updating the description in one file                             |
+| Aspirational convention                              | no      | —     | —          | User decides: enforce via linter, fix codebase, or delete        |
+| Diagram node references renamed/removed component    | yes     | file  | yes        | Updating the node label in the Mermaid source                    |
+| Diagram edge contradicts another document            | no      | —     | —          | Requires judgment on which document is correct                   |
+| ADR missing status field                             | yes     | file  | yes        | Adding status field to YAML frontmatter or top of ADR            |
+| ADR superseded by newer ADR without status update    | yes     | file  | yes        | Updating status to Superseded and adding superseded-by reference |
 
 **For broken paths where the correct path is determinable:** state the old path and the new
 path explicitly. Only classify as `fixable: yes` when you are confident the replacement path

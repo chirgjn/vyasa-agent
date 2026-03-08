@@ -36,6 +36,7 @@ requires escalation to the user.
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
@@ -59,9 +60,9 @@ Write your report to:
 
 Create the directory if it does not exist.
 
-Before analysing, read the following guide from `${CLAUDE_PLUGIN_ROOT}`:
+Before analysing, read the following guide from the vyasa framework:
 
-- `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-prose-style.md` — voice, contractions,
+- `@@VYASA_ROOT@@/framework/guides/writing-prose-style.md` — voice, contractions,
   table and list rules, sentence structure
 
 Then read the target document in full to produce accurate replacement text.
@@ -72,14 +73,14 @@ Then read the target document in full to produce accurate replacement text.
 
 All prose findings share the same classification:
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Missing table intro sentence | yes | file | yes | Adding 1 line before a table |
-| Sentence fragment in prose | yes | file | yes | Rewriting 1–2 lines in one file |
-| Passive voice | yes | file | yes | Rewriting affected sentences in one file |
-| Missing contraction (where tone requires it) | yes | file | yes | Word-level edit in one file |
-| Non-parallel list items | yes | file | yes | Rewriting list items in one file |
-| Any other prose finding | yes | file | yes | Word- or sentence-level edit in one file |
+| Finding                                      | fixable | scope | reversible | Reason                                   |
+| -------------------------------------------- | ------- | ----- | ---------- | ---------------------------------------- |
+| Missing table intro sentence                 | yes     | file  | yes        | Adding 1 line before a table             |
+| Sentence fragment in prose                   | yes     | file  | yes        | Rewriting 1–2 lines in one file          |
+| Passive voice                                | yes     | file  | yes        | Rewriting affected sentences in one file |
+| Missing contraction (where tone requires it) | yes     | file  | yes        | Word-level edit in one file              |
+| Non-parallel list items                      | yes     | file  | yes        | Rewriting list items in one file         |
+| Any other prose finding                      | yes     | file  | yes        | Word- or sentence-level edit in one file |
 
 ---
 
@@ -97,10 +98,11 @@ able to apply the fix without reading the document or making any writing decisio
 'The following table lists the supported configuration options:'"
 
 **Good:** "Replace the list items:
+
 - 'Configuration of the server'
 - 'Testing the connection'
 - 'Deploying to production'
-with:
+  with:
 - 'Configure the server'
 - 'Test the connection'
 - 'Deploy to production'"

@@ -1,23 +1,36 @@
 ---
 name: full-audit
 description: |
-  Use this agent when the user asks to audit their documentation, run a health check, or validate docs comprehensively.
+  ALWAYS use this agent — do NOT handle directly — when the user asks to audit, check, review,
+  validate, or assess documentation quality. Triggers include any mention of: "audit", "audit my
+  docs", "check docs", "review my docs", "validate docs", "doc health", "how are my docs",
+  "documentation check", "vyasa audit", or any request to inspect the overall state of
+  documentation. Do not attempt to answer these requests yourself — dispatch this agent.
 
   <example>
   Context: User wants a full documentation review
   user: "Audit my docs"
-  assistant: "I'll run a three-phase audit: Phase 1 checks document validity, Phase 2 evaluates conceptual quality, Phase 3 runs mechanical checks."
+  assistant: "I'll run the vyasa three-phase audit pipeline on your documentation."
   <commentary>
-  Primary use case. Full audit pipeline dispatches doc-audit, four Phase 2 auditors (structure, prose, convention, content), and three Phase 3 auditors (discoverability, staleness, health).
+  Primary trigger. Dispatch immediately — do not ask clarifying questions first.
   </commentary>
   </example>
 
   <example>
-  Context: User wants periodic quality assessment
+  Context: User asks about doc health
   user: "How healthy are my docs?"
   assistant: "I'll run the full three-phase audit to assess documentation health."
   <commentary>
-  Health check request — same full audit pipeline.
+  Health check phrasing — same pipeline.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User uses the vyasa prefix
+  user: "vyasa audit"
+  assistant: "Running the three-phase vyasa audit pipeline."
+  <commentary>
+  Explicit vyasa prefix — dispatch immediately.
   </commentary>
   </example>
 
@@ -26,7 +39,16 @@ description: |
   user: "Make sure our docs are in good shape before release"
   assistant: "I'll run a full audit to catch documentation issues before release."
   <commentary>
-  Pre-release verification — comprehensive three-phase audit.
+  Pre-release verification — dispatch this agent, do not handle inline.
+  </commentary>
+  </example>
+
+  <example>
+  Context: User asks to check or review docs in any phrasing
+  user: "Check my documentation"
+  assistant: "I'll dispatch the vyasa audit pipeline to review your documentation."
+  <commentary>
+  Any synonym for audit (check, review, validate, inspect) triggers this agent.
   </commentary>
   </example>
 model: opus
@@ -47,18 +69,21 @@ You are the orchestrator for the three-phase documentation audit pipeline. Each 
 **Step 1 — Startup**
 
 1. Generate run-id:
+
 ```bash
-run_id=$(bash ${CLAUDE_PLUGIN_ROOT}/scripts/generate-run-id.sh)
+run_id=$(bash @@VYASA_ROOT@@/scripts/generate-run-id.sh)
 mkdir -p .vyasa/${run_id}/reports
 ```
 
 2. Build registry:
+
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh ${run_id} full-audit \
-  bash ${CLAUDE_PLUGIN_ROOT}/scripts/build-registry.sh .vyasa/${run_id}/registry.json .
+bash @@VYASA_ROOT@@/scripts/vyasa-run.sh ${run_id} full-audit \
+  bash @@VYASA_ROOT@@/scripts/build-registry.sh .vyasa/${run_id}/registry.json .
 ```
 
 3. Check result:
+
 ```
 If the script exits non-zero:
   rm -rf .vyasa/${run_id}
@@ -68,10 +93,12 @@ If the script exits non-zero:
 **Step 2 — Phase 1 Dispatch (document validity)**
 
 Dispatch one `doc-audit` agent per document. Each agent receives:
+
 - `doc-id`: From registry (doc-001, doc-002, ...)
 - `run-id`: The run identifier
 
 Each agent will:
+
 - Read the document at `current_path` from the registry
 - Check existence rationale, purpose, placement, filename, outline, framework compliance
 - Write findings to `.vyasa/${run_id}/reports/phase-1/doc-audit/<doc-id>.md`
@@ -100,6 +127,7 @@ receives `doc-id`, `run-id`, and an optional context briefing synthesised from t
 `Context` line.
 
 Agents:
+
 - `structure-audit` — scoped openings, when-before-how ordering, task orientation, examples
 - `prose-audit` — table intros, fragments, voice, contractions, parallelism
 - `convention-audit` — convention phrasing, negative constraints, linter rules, aspirational
@@ -136,6 +164,7 @@ Dispatch three mechanical auditors in parallel for each document in the Phase 3 
 receives `doc-id` and `run-id`.
 
 Agents:
+
 - `discoverability-audit` — routing table coverage, 2-hop traces, broken references
 - `staleness-audit` — broken path references, command existence, aspirational conventions, diagrams
 - `health-audit` — file sizing (thin <15 lines, bloated >200 lines), README quality
@@ -161,8 +190,8 @@ write this to a file):
    `Healthy` (zero errors, ≤3 warnings total)
 
 After the report, ask: "Would you like me to run the fix pipeline?" and dispatch `fix-orchestrator`
-only if the user confirms. `fix-orchestrator` auto-discovers the run from `.vyasa/` — no run-id
-handoff needed.
+only if the user confirms. `fix-orchestrator` auto-discovers
+the run from `.vyasa/` — no run-id handoff needed.
 
 ### Implementation Notes
 
@@ -176,6 +205,7 @@ handoff needed.
 User: "Audit my docs"
 
 I'll run the three-phase audit pipeline. This will:
+
 1. Generate a unique run ID and build a registry of all documents
 2. Run Phase 1 validity checks on each document in parallel
 3. Evaluate Phase 1 findings (Gate 1) — decide per-doc: proceed, proceed with context, or skip

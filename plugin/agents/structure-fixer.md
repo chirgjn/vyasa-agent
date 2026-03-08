@@ -32,6 +32,7 @@ You do NOT apply changes. The fix-orchestrator reads your output and decides wha
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
@@ -55,9 +56,9 @@ Write your report to:
 
 Create the directory if it does not exist.
 
-Before analysing, read the following guide from `${CLAUDE_PLUGIN_ROOT}`:
+Before analysing, read the following guide from the vyasa framework:
 
-- `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-reference-docs.md` — structure template,
+- `@@VYASA_ROOT@@/framework/guides/writing-reference-docs.md` — structure template,
   scoped opening format, when-before-how ordering, example section requirements
 
 Then read the target document in full.
@@ -68,24 +69,24 @@ Then read the target document in full.
 
 For every finding, produce a classification:
 
-| Field | Values | Rule |
-|---|---|---|
-| `fixable` | `yes` / `no` | Can this finding be resolved without user input? |
-| `scope` | `file` / `multi-file` / `structural` | How many files does the fix touch? |
-| `reversible` | `yes` / `no` | Can the change be undone with a single git revert? |
+| Field        | Values                               | Rule                                               |
+| ------------ | ------------------------------------ | -------------------------------------------------- |
+| `fixable`    | `yes` / `no`                         | Can this finding be resolved without user input?   |
+| `scope`      | `file` / `multi-file` / `structural` | How many files does the fix touch?                 |
+| `reversible` | `yes` / `no`                         | Can the change be undone with a single git revert? |
 
 The orchestrator dispatches autonomously only when all three are: `fixable: yes`,
 `scope: file`, `reversible: yes`. Everything else is escalated.
 
 Classification baseline — override with judgment when the specific case changes it:
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Missing or malformed scoped opening | yes | file | yes | Adding 1–2 lines after the H1 |
-| When-before-how ordering violated | yes | file | yes | Reordering existing sections in one file |
-| Missing example section | yes | file | yes | Adding a skeleton section to one file |
-| Missing prerequisite / consequences section | yes | file | yes | Adding a skeleton section to one file |
-| Major task-oriented restructure (whole-doc flow wrong) | no | — | — | Requires judgment about what moves where; downstream refs may break |
+| Finding                                                | fixable | scope | reversible | Reason                                                              |
+| ------------------------------------------------------ | ------- | ----- | ---------- | ------------------------------------------------------------------- |
+| Missing or malformed scoped opening                    | yes     | file  | yes        | Adding 1–2 lines after the H1                                       |
+| When-before-how ordering violated                      | yes     | file  | yes        | Reordering existing sections in one file                            |
+| Missing example section                                | yes     | file  | yes        | Adding a skeleton section to one file                               |
+| Missing prerequisite / consequences section            | yes     | file  | yes        | Adding a skeleton section to one file                               |
+| Major task-oriented restructure (whole-doc flow wrong) | no      | —     | —          | Requires judgment about what moves where; downstream refs may break |
 
 ---
 

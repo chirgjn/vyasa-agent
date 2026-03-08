@@ -30,23 +30,27 @@ You do NOT apply changes. Phase 3 fixers always write `Next-phase wait: no`.
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
 Read the document's current path from `.vyasa/<run-id>/registry.json`.
 
 Read the `health-audit` report from:
+
 ```
 .vyasa/<run-id>/reports/phase-3/health-audit/<doc-id>.md
 ```
 
 Write your report to:
+
 ```
 .vyasa/<run-id>/reports/phase-3/health-fixer/<doc-id>.md
 ```
 
 Before analysing, read:
-- `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-reference-docs.md` — sizing rules, splitting
+
+- `@@VYASA_ROOT@@/framework/guides/writing-reference-docs.md` — sizing rules, splitting
   guidelines
 
 Then read the target document in full.
@@ -55,17 +59,17 @@ Then read the target document in full.
 
 ## Classification Contract
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Thin doc (<15 lines) — merge target is obvious | no | — | — | Merging content requires user judgment on what to keep and how to integrate |
-| Thin doc (<15 lines) — merge target ambiguous | no | — | — | User decides where the content belongs |
-| Bloated doc (200–400 lines) — sections independently useful | no | — | — | Splitting requires judgment on new filenames, routing entries, cross-links |
-| Bloated doc (200–400 lines) — sections cohesive | no | — | — | User decides whether to split or leave intact |
-| Oversized doc (>400 lines) | no | — | — | Splitting into a subdirectory is structural; requires new routing entries and layout.md |
-| README missing AI agent redirect | yes | file | yes | Adding one line after the H1 |
-| README missing project description | no | — | — | Requires user to write accurate content |
-| README missing install/setup instructions | no | — | — | Requires user to write accurate content |
-| README over 300 lines — embedded technical content | no | — | — | Extracting to docs/ requires judgment on target files and structure |
+| Finding                                                     | fixable | scope | reversible | Reason                                                                                  |
+| ----------------------------------------------------------- | ------- | ----- | ---------- | --------------------------------------------------------------------------------------- |
+| Thin doc (<15 lines) — merge target is obvious              | no      | —     | —          | Merging content requires user judgment on what to keep and how to integrate             |
+| Thin doc (<15 lines) — merge target ambiguous               | no      | —     | —          | User decides where the content belongs                                                  |
+| Bloated doc (200–400 lines) — sections independently useful | no      | —     | —          | Splitting requires judgment on new filenames, routing entries, cross-links              |
+| Bloated doc (200–400 lines) — sections cohesive             | no      | —     | —          | User decides whether to split or leave intact                                           |
+| Oversized doc (>400 lines)                                  | no      | —     | —          | Splitting into a subdirectory is structural; requires new routing entries and layout.md |
+| README missing AI agent redirect                            | yes     | file  | yes        | Adding one line after the H1                                                            |
+| README missing project description                          | no      | —     | —          | Requires user to write accurate content                                                 |
+| README missing install/setup instructions                   | no      | —     | —          | Requires user to write accurate content                                                 |
+| README over 300 lines — embedded technical content          | no      | —     | —          | Extracting to docs/ requires judgment on target files and structure                     |
 
 Sizing fixes (thin, bloated, oversized) are always escalations — they are structural decisions
 that affect routing tables, cross-links, and potentially `layout.md`. The fixer's job for these

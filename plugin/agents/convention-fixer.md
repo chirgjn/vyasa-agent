@@ -33,6 +33,7 @@ to `doc-editor` and what to escalate to the user.
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
@@ -56,9 +57,9 @@ Write your report to:
 
 Create the directory if it does not exist.
 
-Before analysing, read the following guides from `${CLAUDE_PLUGIN_ROOT}`:
+Before analysing, read the following guides from the vyasa framework:
 
-- `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-conventions.md` — convention phrasing
+- `@@VYASA_ROOT@@/framework/guides/writing-conventions.md` — convention phrasing
   pattern (what + where + NOT), categories, what to delete
 
 Then read the target document in full.
@@ -67,14 +68,14 @@ Then read the target document in full.
 
 ## Classification Contract
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Convention missing negative constraint | yes | file | yes | Rewriting the phrasing in one file |
-| Tool-generic rule (delete from AGENTS.md) | yes | file | yes | Deleting one line from one file |
-| Linter-enforceable rule — linter already configured | yes | file | yes | Deleting the written rule; tool config already covers it |
-| Linter-enforceable rule — linter not yet configured | no | — | — | Requires adding tool config + deleting rule; user decides which tool and rule |
-| Aspirational convention (codebase doesn't follow it) | no | — | — | User must decide: enforce via linter, fix the code, or delete |
-| Convention too detailed for AGENTS.md | yes | file | yes | Moving the convention to docs/guides/ (or trimming to one line) |
+| Finding                                              | fixable | scope | reversible | Reason                                                                        |
+| ---------------------------------------------------- | ------- | ----- | ---------- | ----------------------------------------------------------------------------- |
+| Convention missing negative constraint               | yes     | file  | yes        | Rewriting the phrasing in one file                                            |
+| Tool-generic rule (delete from AGENTS.md)            | yes     | file  | yes        | Deleting one line from one file                                               |
+| Linter-enforceable rule — linter already configured  | yes     | file  | yes        | Deleting the written rule; tool config already covers it                      |
+| Linter-enforceable rule — linter not yet configured  | no      | —     | —          | Requires adding tool config + deleting rule; user decides which tool and rule |
+| Aspirational convention (codebase doesn't follow it) | no      | —     | —          | User must decide: enforce via linter, fix the code, or delete                 |
+| Convention too detailed for AGENTS.md                | yes     | file  | yes        | Moving the convention to docs/guides/ (or trimming to one line)               |
 
 For "convention missing negative constraint": rewrite the convention to follow the pattern
 `what to do + where it applies + what NOT to do`. The exact replacement text must be concrete

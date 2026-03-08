@@ -43,6 +43,7 @@ You do not make git commits. The user reviews the result and commits when satisf
 ## Setup
 
 You will be invoked with:
+
 - `task-id` — identifier of the task to execute (e.g. `task-003`)
 - `run-id` — 8-character hex string for this run
 
@@ -62,12 +63,12 @@ Read the task file:
 
 The task file contains:
 
-| Field | Description |
-|---|---|
-| `id` | Task identifier — matches the `task-id` argument |
-| `doc-ids` | Array of document identifiers from the registry (single-file tasks have one element) |
-| `finding` | Audit agent + phase + severity + plain-language description of what was found |
-| `change` | Exactly what to do — specific enough to execute without judgment |
+| Field        | Description                                                                              |
+| ------------ | ---------------------------------------------------------------------------------------- |
+| `id`         | Task identifier — matches the `task-id` argument                                         |
+| `doc-ids`    | Array of document identifiers from the registry (single-file tasks have one element)     |
+| `finding`    | Audit agent + phase + severity + plain-language description of what was found            |
+| `change`     | Exactly what to do — specific enough to execute without judgment                         |
 | `depends_on` | Task IDs that must be `committed` before this task may claim (empty = start immediately) |
 
 **Step 2 — Check dependencies**
@@ -91,7 +92,7 @@ is the file path to use. Never use `original_path`.
 Call `vyasa-claim.sh claim` for all doc-ids in the task in a single invocation:
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh <run-id> doc-editor bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-claim.sh claim <run-id> doc-editor <doc-id> [<doc-id> ...]
+bash @@VYASA_ROOT@@/scripts/vyasa-run.sh <run-id> doc-editor bash @@VYASA_ROOT@@/scripts/vyasa-claim.sh claim <run-id> doc-editor <doc-id> [<doc-id> ...]
 ```
 
 **Step 5 — Confirm all claims**
@@ -99,7 +100,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh <run-id> doc-editor bash ${CLAUD
 Call `vyasa-claim.sh confirm` for all doc-ids in the task:
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh <run-id> doc-editor bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-claim.sh confirm <run-id> doc-editor <doc-id> [<doc-id> ...]
+bash @@VYASA_ROOT@@/scripts/vyasa-run.sh <run-id> doc-editor bash @@VYASA_ROOT@@/scripts/vyasa-claim.sh confirm <run-id> doc-editor <doc-id> [<doc-id> ...]
 ```
 
 - Exit 0 — all claims confirmed, proceed to Step 6.
@@ -107,7 +108,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh <run-id> doc-editor bash ${CLAUD
   to the orchestrator. A conflict indicates an orchestrator bug — do not retry.
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh <run-id> doc-editor bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-claim.sh release <run-id> doc-editor <doc-id> [<doc-id> ...]
+bash @@VYASA_ROOT@@/scripts/vyasa-run.sh <run-id> doc-editor bash @@VYASA_ROOT@@/scripts/vyasa-claim.sh release <run-id> doc-editor <doc-id> [<doc-id> ...]
 ```
 
 **Step 6 — Apply the change**
@@ -122,7 +123,7 @@ with enough detail to diagnose the failure. Do not improvise a different fix.
 **Step 7 — Commit all claims**
 
 ```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-run.sh <run-id> doc-editor bash ${CLAUDE_PLUGIN_ROOT}/scripts/vyasa-claim.sh commit <run-id> doc-editor <doc-id> [<doc-id> ...]
+bash @@VYASA_ROOT@@/scripts/vyasa-run.sh <run-id> doc-editor bash @@VYASA_ROOT@@/scripts/vyasa-claim.sh commit <run-id> doc-editor <doc-id> [<doc-id> ...]
 ```
 
 **Step 8 — Report done**

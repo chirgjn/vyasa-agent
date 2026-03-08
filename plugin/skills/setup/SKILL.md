@@ -24,6 +24,52 @@ Report the output to the user. If all dependencies are present, confirm the
 plugin is ready to use. If any are missing and could not be installed, show the
 user the install links and ask them to say "run vyasa setup" again after installing.
 
+## layout.md and docs directory
+
+`layout.md` is a file at the project root that tells vyasa where the
+documentation directory lives. All lint scripts depend on it.
+
+After reporting dependency status, silently gather:
+
+1. Run `bash ${CLAUDE_PLUGIN_ROOT}/scripts/find-docs-dir.sh <project-root>` —
+   does a `layout.md` exist?
+2. If not, does `<project-root>/docs/` exist?
+
+Then present one consolidated plan and ask for confirmation. Only create files
+after the user confirms.
+
+---
+
+### Case A — `layout.md` exists
+
+Proceed to the **`archive/` check** below. Nothing to create.
+
+---
+
+### Case B — `layout.md` absent, `docs/` exists
+
+Tell the user vyasa needs a `layout.md` to know where the docs live, and that a
+`docs/` directory was found — is that the documentation directory?
+
+- **Yes:** plan to create `layout.md` pointing to `docs: docs/`.
+- **No:** ask which directory to use, then plan to create `layout.md` pointing
+  to `docs: <their-answer>/`.
+
+After confirmation, create `layout.md` per
+`${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-layout-md.md`.
+
+---
+
+### Case C — `layout.md` absent, no `docs/` exists
+
+Tell the user vyasa needs a `layout.md` and no `docs/` directory was found.
+Plan to create both `docs/` and `layout.md` pointing to `docs: docs/`.
+
+After confirmation, create both per
+`${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-layout-md.md`.
+
+---
+
 ## Reserved directory name: `archive/`
 
 The routing-table linter silently excludes everything inside `archive/`. Users
@@ -31,12 +77,9 @@ who already have a directory by that name may not realise their files are being
 skipped. Surface this at setup — before they run lint — so they can act before
 it causes confusion.
 
-If a `layout.md` is present in the project, resolve the docs directory and
-check whether an `archive/` subdirectory already exists inside it:
-
-```bash
-bash ${CLAUDE_PLUGIN_ROOT}/scripts/find-docs-dir.sh <project-root>
-```
+Once the docs directory is known (either from an existing `layout.md` or after
+creating one), check whether an `archive/` subdirectory already exists inside
+it. Include this in the consolidated plan presented to the user.
 
 If `<docs-dir>/archive/` exists, tell the user:
 

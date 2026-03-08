@@ -27,23 +27,27 @@ You do NOT apply changes. Phase 3 fixers always write `Next-phase wait: no`.
 ## Setup
 
 You will be invoked with:
+
 - `doc-id` — stable identifier for this document, from the orchestrator's registry
 - `run-id` — 8-character hex string for this run
 
 Read the document's current path from `.vyasa/<run-id>/registry.json`.
 
 Read the `discoverability-audit` report from:
+
 ```
 .vyasa/<run-id>/reports/phase-3/discoverability-audit/<doc-id>.md
 ```
 
 Write your report to:
+
 ```
 .vyasa/<run-id>/reports/phase-3/discoverability-fixer/<doc-id>.md
 ```
 
 Before analysing, read:
-- `${CLAUDE_PLUGIN_ROOT}/framework/guides/writing-agents-md.md` — routing table format,
+
+- `@@VYASA_ROOT@@/framework/guides/writing-agents-md.md` — routing table format,
   task phrasing, 2-hop rule
 
 Then read `AGENTS.md` and the target document in full.
@@ -52,14 +56,14 @@ Then read `AGENTS.md` and the target document in full.
 
 ## Classification Contract
 
-| Finding | fixable | scope | reversible | Reason |
-|---|---|---|---|---|
-| Missing routing table entry (orphan doc) | yes | file | yes | Adding one row to AGENTS.md |
-| Routing entry with filename-only phrasing | yes | file | yes | Rewriting one row in AGENTS.md |
-| Broken internal reference (path doesn't resolve) | yes | file | yes | Updating the path in one file |
-| Doc not reachable within 2 hops | yes | multi-file | yes | Adding a cross-link in the intermediate doc |
-| Ambiguous 2-hop cross-link (no disambiguation) | yes | file | yes | Adding "when to use which" context to the cross-link |
-| Multiple conflicting routing entries | no | — | — | Requires user judgment on which entry is correct and which to remove |
+| Finding                                          | fixable | scope      | reversible | Reason                                                               |
+| ------------------------------------------------ | ------- | ---------- | ---------- | -------------------------------------------------------------------- |
+| Missing routing table entry (orphan doc)         | yes     | file       | yes        | Adding one row to AGENTS.md                                          |
+| Routing entry with filename-only phrasing        | yes     | file       | yes        | Rewriting one row in AGENTS.md                                       |
+| Broken internal reference (path doesn't resolve) | yes     | file       | yes        | Updating the path in one file                                        |
+| Doc not reachable within 2 hops                  | yes     | multi-file | yes        | Adding a cross-link in the intermediate doc                          |
+| Ambiguous 2-hop cross-link (no disambiguation)   | yes     | file       | yes        | Adding "when to use which" context to the cross-link                 |
+| Multiple conflicting routing entries             | no      | —          | —          | Requires user judgment on which entry is correct and which to remove |
 
 **For orphan docs:** the fix touches `AGENTS.md` (one row added). The stub entry must use
 task phrasing: "When you are [task] → `<path>`". Determine the task from the document's

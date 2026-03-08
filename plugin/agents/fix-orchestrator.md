@@ -52,6 +52,7 @@ ls -t .vyasa/ | head -20
 ```
 
 For each directory (newest first), check:
+
 1. `.vyasa/<run-id>/registry.json` exists
 2. At least one report exists under `.vyasa/<run-id>/reports/phase-1/`
 
@@ -59,9 +60,11 @@ Select the first directory that satisfies both. If none is found, stop:
 `No valid audit run found. Run full-audit first.`
 
 **Print:**
+
 ```
 Using audit run <run-id> (<N> docs, <N> findings).
 ```
+
 Then proceed without waiting for user input.
 
 **Build the findings index.**
@@ -99,6 +102,7 @@ For each doc with Phase 1 findings, dispatch one `doc-fixer` instance with `doc-
 `run-id`. Wait for all to complete.
 
 Read each fixer report from:
+
 ```
 .vyasa/<run-id>/reports/phase-1/doc-fixer/<doc-id>.md
 ```
@@ -112,14 +116,17 @@ A missing or unparseable `FIXER SUMMARY` is an agent failure — note it and con
 Read all `doc-fixer` reports. Route each finding:
 
 **Autonomous** (`fixable: yes`, `scope: file or multi-file`, `reversible: yes`):
+
 - Write a task file to `.vyasa/<run-id>/tasks/<task-id>.json`
 - Queue for `doc-editor` (dispatched after escalations are resolved)
 
 **Escalations** (`fixable: no`, `scope: structural`, or `reversible: no`):
+
 - Collect all escalations into a single message to the user
 - Wait for the user's response before continuing
 
 **Task file format:**
+
 ```json
 {
   "id": "task-001",
@@ -146,6 +153,7 @@ was approved for a rename or move.
 ## Step 4 — Phase 2 fixers (parallel)
 
 For each doc with Phase 2 findings:
+
 - If that doc has a blocking Phase 1 task: wait until the task appears as `committed` in
   `.vyasa/<run-id>/changes.log` before dispatching Phase 2 fixers for it
 - Dispatch all four Phase 2 fixers: `structure-fixer`, `prose-fixer`, `convention-fixer`,
@@ -154,6 +162,7 @@ For each doc with Phase 2 findings:
 Wait for all to complete.
 
 Read each fixer report from:
+
 ```
 .vyasa/<run-id>/reports/phase-2/<fixer-name>/<doc-id>.md
 ```
@@ -170,9 +179,11 @@ user response, update registry for approved moves, dispatch `doc-editor` instanc
 ## Step 6 — Phase 3 fixers (parallel)
 
 For each doc with Phase 3 findings, dispatch all three Phase 3 fixers: `discoverability-fixer`,
-`staleness-fixer`, `health-fixer` — each with `doc-id` and `run-id`. Wait for all to complete.
+`staleness-fixer`, `health-fixer` — each with `doc-id` and `run-id`. Wait for all
+to complete.
 
 Read each fixer report from:
+
 ```
 .vyasa/<run-id>/reports/phase-3/<fixer-name>/<doc-id>.md
 ```
