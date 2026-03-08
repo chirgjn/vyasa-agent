@@ -331,6 +331,26 @@ run-id=<run-id> phase=<N>` signal on its last line. The relay skill watches for 
   available in Claude Code. It is used from the relay skill (main conversation context)
   to dispatch forked worker skills in parallel._
 
+- **Context management and inter-layer communication need a spec.** The design names the
+  layers (relay → orchestrator → workers) and the signals (`SPAWN_READY`, spawn-request
+  file, resume invocation), but does not specify: (a) what context each layer carries at
+  startup — what files, state, or prior output it reads before acting; (b) what each
+  layer writes before exiting and in what format; (c) how errors or unexpected output from
+  one layer are surfaced to the next. Options: (1) a single behaviour spec covers all
+  three layers end-to-end; (2) one spec per layer boundary (relay↔orchestrator,
+  orchestrator↔workers). User response: _Pending_. Resolution: _Pending_.
+
+- **Spawn hierarchy and skill lifetimes need to be made explicit.** The component diagram
+  shows the relationships but does not state them as rules: who spawns whom, whether any
+  layer can re-spawn, and when each skill instance terminates. Specifically unclear: does
+  the relay spawn the orchestrator via `TaskCreate` or via direct skill invocation? Does
+  the orchestrator ever outlive a single phase, or does it always exit after writing
+  `SPAWN_READY`? Are worker skill instances guaranteed to terminate before the relay
+  re-invokes the orchestrator? These rules determine whether the model is safe under
+  failure and need to be pinned in the spec before implementation. Options: (1) add a
+  "Spawn rules and lifetimes" subsection to this design before approval; (2) defer to the
+  spec. User response: _Pending_. Resolution: _Pending_.
+
 ---
 
 ## Out of scope
