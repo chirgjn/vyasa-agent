@@ -32,17 +32,15 @@ plugin/                          — the plugin (all consumer-facing content; ed
     *-lint.md                    — hook-triggered single-file linters (AGENTS.md, diagrams)
     author-*.md, doc-maintenance.md — authoring and maintenance agents
   commands/                      — plugin slash commands
+  skills/                        — plugin skills (invokable by users; e.g. vyasa:setup)
   framework/                     → plugin/framework/layout.md
   hooks/
     hooks.json                   — hook definitions (auto-triggering config)
   scripts/                       — scripts agents and hooks call in consumer projects → plugin/scripts/README.md
   README.md, LICENSE
 
-.claude-plugin/
-  plugin.json                    — plugin manifest (version authority for dev repo)
-
 scripts/
-  bump-plugin-version.sh         — bumps version in .claude-plugin/plugin.json; adds -dev suffix
+  bump-plugin-version.sh         — bumps version in plugin/.claude-plugin/plugin.json; adds -dev suffix
   setup/                         — full project dev setup: orchestrator + individual install scripts
     setup.sh                     — entry point: runs all install steps in order
     README.md                    — script table and dependency tree
@@ -66,8 +64,8 @@ docs/
 
 - `pyproject.toml` — shared Python tooling config covering all scripts and tests (not per-directory)
 - `package.json` — Node.js dev dependencies (prettier)
-- `scripts/bump-plugin-version.sh` — release tooling; bumps version in `.claude-plugin/plugin.json`
-- `.claude-plugin/plugin.json` — version authority for this dev repo (not `plugin/.claude-plugin/`)
+- `scripts/bump-plugin-version.sh` — release tooling; bumps version in `plugin/.claude-plugin/plugin.json`
+- `plugin/.claude-plugin/plugin.json` — single version authority; plugin is self-contained
 
 ## What Doesn't Live Here
 

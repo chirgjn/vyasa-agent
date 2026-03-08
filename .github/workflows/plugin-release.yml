@@ -33,18 +33,19 @@ jobs:
 
       - name: Strip -dev and set release version
         run: |
-          current=$(jq -r '.version' .claude-plugin/plugin.json)
+          current=$(jq -r '.version' plugin/.claude-plugin/plugin.json)
           release_version="${current%%-*}"
           echo "release_version=$release_version" >> "$GITHUB_ENV"
-          jq --arg v "$release_version" '.version = $v' .claude-plugin/plugin.json > .claude-plugin/plugin.json.tmp
-          mv .claude-plugin/plugin.json.tmp .claude-plugin/plugin.json
+          manifest="plugin/.claude-plugin/plugin.json"
+          jq --arg v "$release_version" '.version = $v' "$manifest" > "$manifest.tmp"
+          mv "$manifest.tmp" "$manifest"
 
       - name: Sync plugin directory
         run: scripts/sync-plugin.sh
 
       - name: Commit release and tag
         run: |
-          git add .claude-plugin/plugin.json plugin/
+          git add plugin/
           git commit -m "release: v${{ env.release_version }}"
           git tag "v${{ env.release_version }}"
           git push origin main --tags

@@ -6,7 +6,7 @@
 set -euo pipefail
 
 REPO_ROOT="$(cd "$(dirname "$0")/.." && pwd)"
-MANIFEST="$REPO_ROOT/.claude-plugin/plugin.json"
+MANIFEST="$REPO_ROOT/plugin/.claude-plugin/plugin.json"
 
 bump_type="${1:-patch}"
 

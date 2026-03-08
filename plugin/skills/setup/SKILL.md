@@ -1,5 +1,6 @@
 ---
-description: Check and install vyasa runtime dependencies (git, jq, prettier)
+name: setup
+description: Run vyasa runtime dependency check and setup. Use when the user asks to set up vyasa, install dependencies, or check whether the plugin is ready to use.
 ---
 
 Run the vyasa runtime dependency check. This verifies that `git` and `jq`
@@ -21,7 +22,7 @@ bash ${CLAUDE_PLUGIN_ROOT}/scripts/check-runtime-deps.sh
 
 Report the output to the user. If all dependencies are present, confirm the
 plugin is ready to use. If any are missing and could not be installed, show the
-user the install links and ask them to re-run `/vyasa:setup` after installing.
+user the install links and ask them to say "run vyasa setup" again after installing.
 
 ## Reserved directory name: `archive/`
 
@@ -43,6 +44,6 @@ If `<docs-dir>/archive/` exists, tell the user:
   plans, checklists, spike notes). The routing-table linter silently skips it.
 - If their `archive/` already holds that kind of content — no action needed.
 - If it holds content agents need to read during normal work — move those files
-  to `docs/` and add routing-table entries. The test: *will anyone read this to
-  do a current task, not just to understand history?* If yes, it belongs in
+  to `docs/` and add routing-table entries. The test: _will anyone read this to
+  do a current task, not just to understand history?_ If yes, it belongs in
   `docs/`, not `archive/`.

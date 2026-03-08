@@ -62,16 +62,15 @@ After publishing, bump the version and add `-dev` locally before your next push:
 
 ```bash
 scripts/bump-plugin-version.sh patch   # or minor / major
-git add .claude-plugin/plugin.json plugin/.claude-plugin/plugin.json
-git commit -m "chore: begin $(jq -r .version .claude-plugin/plugin.json)"
+git add plugin/.claude-plugin/plugin.json
+git commit -m "chore: begin $(jq -r .version plugin/.claude-plugin/plugin.json)"
 ```
 
 ### Publishing a new version — manual
 
 Go to **Actions → Plugin Release → Run workflow** and run it. The workflow:
 
-1. Strips `-dev` from the current version in `.claude-plugin/plugin.json`
-1. Updates `plugin/.claude-plugin/plugin.json` to match
+1. Strips `-dev` from the current version in `plugin/.claude-plugin/plugin.json`
 1. Commits as `release: vX.Y.Z` and tags `vX.Y.Z`
 
 The version to release is whatever is in `plugin.json` on `main` at the time — set it before triggering.

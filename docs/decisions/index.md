@@ -20,3 +20,4 @@ All decision records, in order of creation:
 | [008](008-four-type-doc-taxonomy.md)                | Four-type documentation taxonomy: architecture, spec, plan, decision | Superseded by 010 |
 | [009](009-spec-lifecycle-and-organisation.md)       | Spec lifecycle: statuses, directory layout, and naming               | Accepted          |
 | [010](010-design-doc-as-fifth-taxonomy-type.md)     | Design doc as a fifth documentation type                             | Accepted          |
+| [011](011-setup-skill-not-command.md)               | Setup exposed as a skill, not a command                              | Accepted          |

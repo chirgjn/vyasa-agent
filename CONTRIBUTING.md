@@ -70,8 +70,8 @@ After a release, bump the version before your next push:
 
 ```bash
 scripts/bump-plugin-version.sh patch   # or minor / major
-git add .claude-plugin/plugin.json plugin/.claude-plugin/plugin.json
-git commit -m "chore: begin $(jq -r .version .claude-plugin/plugin.json)"
+git add plugin/.claude-plugin/plugin.json
+git commit -m "chore: begin $(jq -r .version plugin/.claude-plugin/plugin.json)"
 ```
 
 Releases are triggered manually via **Actions → Plugin Release → Run workflow**.

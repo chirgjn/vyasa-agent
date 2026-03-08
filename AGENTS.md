@@ -6,16 +6,16 @@ Opinionated documentation framework — how to structure, write, and maintain pr
 
 ```
 plugin/                         — The plugin (all consumer-facing content)
-plugin/.claude-plugin/          — Plugin manifest
+plugin/.claude-plugin/          — Plugin manifest (version authority; plugin is self-contained)
 plugin/agents/                  — Plugin agents: auditors, fixers, orchestrators, and scribes
-plugin/commands/                — Plugin slash commands (e.g., /vyasa:setup)
+plugin/commands/                — Plugin slash commands
+plugin/skills/                  — Plugin skills (e.g., vyasa:setup)
 plugin/framework/               — The documentation framework
 plugin/framework/managing-project-information.md — Central index: taxonomy, placement, directory structure, and routing table for all writing guides
 plugin/framework/auditing-anti-patterns.md       — Pragmatic audit guide: broad but not exhaustive, self-contained, complements the full audit pipeline
 plugin/framework/guides/        — Writing guides: prose style, conventions, diagrams, AGENTS.md, layout.md, ADRs, specs, designs, maintenance
 plugin/hooks/                   — Plugin hooks: auto-triggering config (hooks.json)
 plugin/scripts/                 — Scripts that ship inside the plugin (agents and hooks call these)
-.claude-plugin/                 — Plugin manifest (version authority for dev repo)
 docs/maintenance.md             — This repo's maintenance: update triggers, enforcement layers
 scripts/setup/                  — Project dev setup scripts (uv, Python, deps, taplo, gh, etc.)
 scripts/tools/                  — Dev-only linter/formatter wrappers for hooks and CI
