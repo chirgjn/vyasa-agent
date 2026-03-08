@@ -50,12 +50,16 @@ scripts/
 tests/                           — pytest suite for plugin scripts (test_*.py)
 
 docs/
-  audit-pipeline.md              — architecture: agents, phases, gates, claim protocol
+  audit-pipeline.md              — architecture: agents, phases, gates, data flow, agent inventory
   maintenance.md                 — this repo's update triggers, enforcement layers, release process
-  python-type-annotations.md     — how to keep basedpyright warnings at zero in pytest test files
+  guides/
+    python-type-annotations.md   — how to keep basedpyright warnings at zero in pytest test files
   decisions/                     — ADRs: reasoning behind non-obvious pipeline design choices
   designs/                       — design docs: pre-approval problem + alternatives + recommendation (live until deprecated or rejected)
   specs/                         — pipeline specs (index.md + per-spec files by lifecycle status)
+    live/
+      audit-report-format.md     — auditor/fixer report formats, classification contract, phase 2 baselines
+      run-infrastructure.md      — run ID, registry, filesystem layout, claim protocol, task structure
   plans/                         — active implementation plans (archive to docs/archive/plans/ after merge)
   archive/
     designs/                     — deprecated or rejected design docs

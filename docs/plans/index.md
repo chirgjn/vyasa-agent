@@ -13,3 +13,9 @@ Active plans:
 | File                                                               | Topic                                                         | Status |
 | ------------------------------------------------------------------ | ------------------------------------------------------------- | ------ |
 | [2026-03-08-pipeline-dispatch.md](2026-03-08-pipeline-dispatch.md) | Dispatch instructions for `full-audit` and `fix-orchestrator` | Active |
+
+Completed plans (archived to `docs/archive/plans/`):
+
+| File                                                                                  | Topic                                                              |
+| ------------------------------------------------------------------------------------- | ------------------------------------------------------------------ |
+| [2026-03-09-doc-reorganisation.md](../archive/plans/2026-03-09-doc-reorganisation.md) | Move python-type-annotations, extract specs from audit-pipeline.md |

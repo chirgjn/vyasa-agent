@@ -22,6 +22,8 @@ Specs live in different directories depending on their lifecycle stage:
 
 All specs, regardless of status:
 
-| Spec                                         | Status   | Summary                                                                                        |
-| -------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
-| [pipeline-dispatch.md](pipeline-dispatch.md) | Accepted | Subagent dispatch mechanism, allowlist syntax, and batch sizes for the audit and fix pipelines |
+| Spec                                                  | Status   | Summary                                                                                        |
+| ----------------------------------------------------- | -------- | ---------------------------------------------------------------------------------------------- |
+| [pipeline-dispatch.md](pipeline-dispatch.md)          | Accepted | Subagent dispatch mechanism, allowlist syntax, and batch sizes for the audit and fix pipelines |
+| [audit-report-format.md](live/audit-report-format.md) | Live     | Auditor finding blocks, phase summaries, fixer classification contract, and phase 2 baselines  |
+| [run-infrastructure.md](live/run-infrastructure.md)   | Live     | Run ID, document registry, filesystem layout, claim protocol, and task structure               |
