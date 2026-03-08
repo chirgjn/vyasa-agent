@@ -1,6 +1,8 @@
 # Pipeline Orchestration Model Design
 
-**Status:** Under Review
+> **Phase: Under Review**
+> _Next: Approved → Live (post-extraction) → Superseded / Rejected_
+
 **Date:** 2026-03-08
 **Author:** Engineering
 

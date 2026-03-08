@@ -15,14 +15,13 @@ A design doc serves one overarching goal by answering multiple questions: what p
 we solving, what did we consider, what are we doing, and why. The core of every design doc
 is **the problem** — if that isn't clear, nothing else in the document matters.
 
-Design docs start fat. A proposed design carries full context — detailed alternatives,
-trade-off analysis, open questions — because that context is needed to get approval.
-Approval unlocks planning: a plan is written and execution begins. During planning, the
-design may be updated as implementation details are worked out. As part of or after
-planning, extraction happens: ADRs are written for decisions with wider impact, specs are
-written for solutions that need exhaustive detail. The design doc is then trimmed of
-content that now lives elsewhere, and it stays live as the authoritative record of what
-was decided and why.
+**Design docs change shape over their lifecycle.** A proposed design is intentionally fat:
+full alternatives, detailed trade-off analysis, open questions — because reviewers need all
+of that to evaluate the approach. After approval, a plan is written and execution begins.
+As extraction happens (ADRs for decisions with wider impact, specs for exhaustive detail),
+the design is trimmed of content that now lives elsewhere. The live design that remains is
+lean: problem, options, reasoning, links to artifacts. Fat at proposal; lean after
+extraction. Both are correct for their phase.
 
 **Design doc, not ADR.** An ADR answers one question with one answer, plus the context
 and constraints that made it non-obvious. A design doc serves a broader goal and may
@@ -91,8 +90,9 @@ flowchart TD
     style adrs fill:#282828,stroke:#484848,color:#ffffff
 ```
 
-**Proposed designs are long** — they carry full context so reviewers can evaluate the
-trade-offs. This is correct.
+**At Draft / Under Review: fat is correct.** A proposed design carries full context —
+detailed alternatives, trade-off analysis, resolved and unresolved open questions — because
+that context is what reviewers need. Do not trim a proposed design.
 
 **Approval unlocks planning.** Write a plan immediately after approval. The design may be
 updated during planning as implementation details become clearer.
@@ -101,6 +101,10 @@ updated during planning as implementation details become clearer.
 plan is written or executed, extract ADRs for decisions with wider impact and write specs
 for solutions that need exhaustive detail. Trim the design of content that now lives
 elsewhere; it remains live as the lasting record of the problem and reasoning.
+
+**After extraction: lean is correct.** The trimmed design should be readable as a
+narrative — problem, options, reasoning, links to artifacts. It should not be a table of
+contents, and it should not retain spec-level detail that now lives in a spec.
 
 **An approved design that is still long** is a housekeeping signal: extraction may not
 have happened yet, not a quality failure in the document itself.
@@ -118,7 +122,9 @@ Use when writing a new design doc — copy this skeleton and fill in each sectio
 ```markdown
 # [Feature or Change] Design
 
-**Status:** Draft | Under Review | Approved | Superseded by [link] | Rejected | Deprecated
+> **Phase: Draft**
+> _Change to: Under Review → Approved → Live (post-extraction) → Superseded / Rejected_
+
 **Date:** YYYY-MM-DD
 **Author:** [name or role]
 
@@ -155,9 +161,13 @@ tips the scales, not just what the winner is. One or two paragraphs.
 
 ## Open questions
 
-Questions that must be answered before or during implementation. Owner and deadline if
-known. Strike through when resolved; don't delete — resolved questions show what was
-considered.
+<!--
+Format each question as:
+- **[Question]** Options considered: A, B, C. User response: [brief]. Resolution: [answer] — or _Pending_.
+Strike through the entire entry when resolved; don't delete it.
+-->
+
+- **[Question]** Options considered: ... User response: ... Resolution: _Pending_.
 
 ## Out of scope
 
@@ -210,8 +220,27 @@ trustworthy.
 
 ### Open questions
 
-Write these during drafting; don't wait until review. Strike through when resolved — the
-history of what was asked and answered is part of the design's value.
+Write these during drafting; don't wait until review. Record every question as it arises
+— including questions surfaced in conversation with the user before or during writing.
+
+Each entry uses a consistent format:
+
+```
+- **[Question]** Options considered: A, B, C. User response: [brief]. Resolution: [answer].
+```
+
+- **Options considered** — the alternatives that were on the table for this question,
+  even informally. If there was only one obvious path, say so.
+- **User response** — a brief note of what the user said when the question was raised,
+  if applicable. Not a transcript; a one-line summary.
+- **Resolution** — the answer reached. If still open, write `_Pending_`.
+
+Strike through the entire entry when resolved — do not delete it. The history of what was
+asked, what was considered, and how it was resolved is part of the design's value.
+
+**When to add an entry:** Any time a question is raised — in the conversation, during
+drafting, or discovered while writing alternatives — add it immediately. Do not wait for
+the answer. Mark it `_Pending_`; fill in the resolution when it arrives.
 
 ---
 
@@ -306,6 +335,10 @@ docs/designs/<slug>.md
 | No alternatives section                             | Add at least two real options with honest pros/cons                                                                    |
 | Recommendation doesn't compare against alternatives | Rewrite to name what tips the scales                                                                                   |
 | Cons omitted for the recommended option             | Add the real costs — every option has them                                                                             |
+| Proposed design trimmed prematurely                 | Fat is correct at proposal phase — do not trim until after approval and extraction                                     |
+| Open questions not recorded until review            | Add questions as they arise during drafting; mark `_Pending_`, fill in resolution when it arrives                      |
+| User responses to questions not captured            | Record the brief response inline in the question entry — it is part of the design's reasoning                          |
+| Phase not visible at a glance                       | Update the Phase blockquote at the top of the doc whenever status changes                                              |
 | Design is still very long after plan ships          | Check whether extraction has happened — if not, extract ADRs and write the spec, then trim                             |
 | Design archived after plan ships                    | Don't archive on plan completion — keep live; archive only on deprecation or rejection                                 |
 | ADRs extracted for every decision in the design     | Reserve ADRs for decisions with wider impact or reuse potential; minor or narrowly scoped decisions stay in the design |
