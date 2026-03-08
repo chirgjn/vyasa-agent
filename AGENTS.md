@@ -69,6 +69,7 @@ For finding and fixing problems in docs that already exist, see `plugin/framewor
 | Understanding the audit or fix pipeline — agents, phases, gates, claim protocol, or agent inventory  | `docs/audit-pipeline.md`          |
 | Understanding any pipeline spec — dispatch, report format, claim protocol                            | `docs/specs/index.md`             |
 | Reviewing any pipeline architectural decision — phasing, file handoff, claim log, etc.               | `docs/decisions/index.md`         |
+| Reviewing a proposed or active design — problem, alternatives, recommendation for a pipeline change  | `docs/designs/index.md`           |
 | Finding or tracking an active implementation plan                                                    | `docs/plans/index.md`             |
 | Understanding what each runtime script does (claim, lint, find-docs-dir, etc.)                       | `plugin/scripts/README.md`        |
 | Understanding what each dev tool script does (ruff, prettier, CI checks, etc.)                       | `scripts/tools/README.md`         |

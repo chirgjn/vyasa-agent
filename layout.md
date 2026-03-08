@@ -54,9 +54,11 @@ docs/
   maintenance.md                 — this repo's update triggers, enforcement layers, release process
   python-type-annotations.md     — how to keep basedpyright warnings at zero in pytest test files
   decisions/                     — ADRs: reasoning behind non-obvious pipeline design choices
+  designs/                       — design docs: pre-approval problem + alternatives + recommendation (live until deprecated or rejected)
   specs/                         — pipeline specs (index.md + per-spec files by lifecycle status)
   plans/                         — active implementation plans (archive to docs/archive/plans/ after merge)
   archive/
+    designs/                     — deprecated or rejected design docs
     plans/                       — completed implementation plans (ephemeral after merge)
 ```
 
